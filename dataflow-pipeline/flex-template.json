@@ -1,0 +1,25 @@
+{
+    "image": "us-central1-docker.pkg.dev/realtime-data-pipeline-123/beam-docker-repo/dataflow-pipeline:latest",
+    "metadata": {
+      "name": "realtime-dataflow-pipeline",
+      "description": "Processes streaming data from Pub/Sub to BigQuery and GCS",
+      "parameters": {
+        "input_topic": {
+          "label": "Input Pub/Sub topic",
+          "help_text": "Pub/Sub topic to read data from"
+        },
+        "output_path": {
+          "label": "GCS Output Path",
+          "help_text": "Path to store raw messages"
+        },
+        "bq_table": {
+          "label": "BigQuery Table",
+          "help_text": "BigQuery table to write to"
+        }
+      }
+    },
+    "sdk_info": {
+      "language": "PYTHON"
+    }
+  }
+  
