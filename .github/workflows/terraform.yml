@@ -14,6 +14,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Check GCP_CREDENTIALS secret
+        run: |
+          if [ -z "$GCP_CREDENTIALS" ]; then
+            echo "GCP_CREDENTIALS is EMPTY"
+            exit 1
+          else
+            echo "GCP_CREDENTIALS is set"
+          fi
+
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
         with:
