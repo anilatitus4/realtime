@@ -3,6 +3,11 @@ resource "google_storage_bucket" "staging_bucket" {
   location = var.region
   force_destroy = true
   uniform_bucket_level_access = true
+
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes  = all
+  }
 }
 
 resource "google_storage_bucket" "raw_data_bucket" {
@@ -10,4 +15,9 @@ resource "google_storage_bucket" "raw_data_bucket" {
   location = var.region
   force_destroy = true
   uniform_bucket_level_access = true
+
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes  = all
+  }
 }

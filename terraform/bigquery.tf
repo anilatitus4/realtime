@@ -1,6 +1,11 @@
 resource "google_bigquery_dataset" "realtime_dataset" {
   dataset_id = "realtime_dataset"
   location   = var.region
+ 
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes  = all
+  }
 }
 
 resource "google_bigquery_table" "realtime_table" {
@@ -23,4 +28,9 @@ resource "google_bigquery_table" "realtime_table" {
   time_partitioning {
     type = "DAY"
   }
-}
+
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes  = all
+  }
+} 
