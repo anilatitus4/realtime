@@ -1,0 +1,346 @@
+{
+  "version": 4,
+  "terraform_version": "1.12.2",
+  "serial": 34,
+  "lineage": "85927910-8e4e-1604-e720-99fbf1e59574",
+  "outputs": {
+    "bigquery_dataset": {
+      "value": "realtime_dataset",
+      "type": "string"
+    },
+    "bigquery_table": {
+      "value": "streaming_output",
+      "type": "string"
+    },
+    "gcs_bucket_raw_data": {
+      "value": "realtime-data-pipeline-123-raw-data",
+      "type": "string"
+    },
+    "gcs_bucket_staging": {
+      "value": "realtime-data-pipeline-123-staging",
+      "type": "string"
+    },
+    "pubsub_subscription": {
+      "value": "realtime-stream-sub",
+      "type": "string"
+    },
+    "pubsub_topic": {
+      "value": "realtime-stream-topic",
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "google_bigquery_dataset",
+      "name": "realtime_dataset",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "access": [
+              {
+                "dataset": [],
+                "domain": "",
+                "group_by_email": "",
+                "iam_member": "",
+                "role": "OWNER",
+                "routine": [],
+                "special_group": "",
+                "user_by_email": "anilatitus4@gmail.com",
+                "view": []
+              },
+              {
+                "dataset": [],
+                "domain": "",
+                "group_by_email": "",
+                "iam_member": "",
+                "role": "OWNER",
+                "routine": [],
+                "special_group": "projectOwners",
+                "user_by_email": "",
+                "view": []
+              },
+              {
+                "dataset": [],
+                "domain": "",
+                "group_by_email": "",
+                "iam_member": "",
+                "role": "READER",
+                "routine": [],
+                "special_group": "projectReaders",
+                "user_by_email": "",
+                "view": []
+              },
+              {
+                "dataset": [],
+                "domain": "",
+                "group_by_email": "",
+                "iam_member": "",
+                "role": "WRITER",
+                "routine": [],
+                "special_group": "projectWriters",
+                "user_by_email": "",
+                "view": []
+              }
+            ],
+            "creation_time": 1752539697620,
+            "dataset_id": "realtime_dataset",
+            "default_collation": "",
+            "default_encryption_configuration": [],
+            "default_partition_expiration_ms": 0,
+            "default_table_expiration_ms": 0,
+            "delete_contents_on_destroy": false,
+            "description": "",
+            "effective_labels": {},
+            "etag": "mLf/6H0DmacONFgEJDaHTA==",
+            "external_dataset_reference": [],
+            "friendly_name": "",
+            "id": "projects/realtime-data-pipeline-123/datasets/realtime_dataset",
+            "is_case_insensitive": false,
+            "labels": {},
+            "last_modified_time": 1752539697620,
+            "location": "us-central1",
+            "max_time_travel_hours": "168",
+            "project": "realtime-data-pipeline-123",
+            "resource_tags": {},
+            "self_link": "https://bigquery.googleapis.com/bigquery/v2/projects/realtime-data-pipeline-123/datasets/realtime_dataset",
+            "storage_billing_model": "",
+            "terraform_labels": {},
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMCJ9"
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_bigquery_table",
+      "name": "realtime_table",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "allow_resource_tags_on_deletion": false,
+            "clustering": null,
+            "creation_time": 1752539698041,
+            "dataset_id": "realtime_dataset",
+            "deletion_protection": true,
+            "description": "",
+            "effective_labels": {},
+            "encryption_configuration": [],
+            "etag": "y+wVnoeWrC/NRcUU/DFJmA==",
+            "expiration_time": 0,
+            "external_data_configuration": [],
+            "friendly_name": "",
+            "id": "projects/realtime-data-pipeline-123/datasets/realtime_dataset/tables/streaming_output",
+            "labels": {},
+            "last_modified_time": 1752539698144,
+            "location": "us-central1",
+            "materialized_view": [],
+            "max_staleness": "",
+            "num_bytes": 0,
+            "num_long_term_bytes": 0,
+            "num_rows": 0,
+            "project": "realtime-data-pipeline-123",
+            "range_partitioning": [],
+            "require_partition_filter": false,
+            "resource_tags": {},
+            "schema": "[{\"mode\":\"REQUIRED\",\"name\":\"timestamp\",\"type\":\"TIMESTAMP\"},{\"mode\":\"REQUIRED\",\"name\":\"message\",\"type\":\"STRING\"}]",
+            "self_link": "https://bigquery.googleapis.com/bigquery/v2/projects/realtime-data-pipeline-123/datasets/realtime_dataset/tables/streaming_output",
+            "table_constraints": [],
+            "table_id": "streaming_output",
+            "table_replication_info": [],
+            "terraform_labels": {},
+            "time_partitioning": [
+              {
+                "expiration_ms": 0,
+                "field": "",
+                "require_partition_filter": false,
+                "type": "DAY"
+              }
+            ],
+            "type": "TABLE",
+            "view": []
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjAifQ=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_pubsub_subscription",
+      "name": "stream_subscription",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "ack_deadline_seconds": 20,
+            "bigquery_config": [],
+            "cloud_storage_config": [],
+            "dead_letter_policy": [],
+            "effective_labels": {},
+            "enable_exactly_once_delivery": false,
+            "enable_message_ordering": false,
+            "expiration_policy": [
+              {
+                "ttl": "2678400s"
+              }
+            ],
+            "filter": "",
+            "id": "projects/realtime-data-pipeline-123/subscriptions/realtime-stream-sub",
+            "labels": {},
+            "message_retention_duration": "604800s",
+            "name": "realtime-stream-sub",
+            "project": "realtime-data-pipeline-123",
+            "push_config": [],
+            "retain_acked_messages": false,
+            "retry_policy": [],
+            "terraform_labels": {},
+            "timeouts": null,
+            "topic": "projects/realtime-data-pipeline-123/topics/realtime-stream-topic"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMCJ9"
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_pubsub_topic",
+      "name": "stream_topic",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "effective_labels": {},
+            "id": "projects/realtime-data-pipeline-123/topics/realtime-stream-topic",
+            "ingestion_data_source_settings": [],
+            "kms_key_name": "",
+            "labels": {},
+            "message_retention_duration": "",
+            "message_storage_policy": [],
+            "name": "realtime-stream-topic",
+            "project": "realtime-data-pipeline-123",
+            "schema_settings": [],
+            "terraform_labels": {},
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMCJ9"
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_storage_bucket",
+      "name": "raw_data_bucket",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "autoclass": [],
+            "cors": [],
+            "custom_placement_config": [],
+            "default_event_based_hold": false,
+            "effective_labels": {},
+            "enable_object_retention": false,
+            "encryption": [],
+            "force_destroy": false,
+            "id": "realtime-data-pipeline-123-raw-data",
+            "labels": {},
+            "lifecycle_rule": [],
+            "location": "US-CENTRAL1",
+            "logging": [],
+            "name": "realtime-data-pipeline-123-raw-data",
+            "project": "realtime-data-pipeline-123",
+            "project_number": 10017251802,
+            "public_access_prevention": "inherited",
+            "requester_pays": false,
+            "retention_policy": [],
+            "rpo": null,
+            "self_link": "https://www.googleapis.com/storage/v1/b/realtime-data-pipeline-123-raw-data",
+            "soft_delete_policy": [
+              {
+                "effective_time": "2025-07-15T00:34:57.896Z",
+                "retention_duration_seconds": 604800
+              }
+            ],
+            "storage_class": "STANDARD",
+            "terraform_labels": {},
+            "timeouts": null,
+            "uniform_bucket_level_access": true,
+            "url": "gs://realtime-data-pipeline-123-raw-data",
+            "versioning": [],
+            "website": []
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsInJlYWQiOjI0MDAwMDAwMDAwMCwidXBkYXRlIjoyNDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjIifQ=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_storage_bucket",
+      "name": "staging_bucket",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "autoclass": [],
+            "cors": [],
+            "custom_placement_config": [],
+            "default_event_based_hold": false,
+            "effective_labels": {},
+            "enable_object_retention": false,
+            "encryption": [],
+            "force_destroy": false,
+            "id": "realtime-data-pipeline-123-staging",
+            "labels": {},
+            "lifecycle_rule": [],
+            "location": "US-CENTRAL1",
+            "logging": [],
+            "name": "realtime-data-pipeline-123-staging",
+            "project": "realtime-data-pipeline-123",
+            "project_number": 10017251802,
+            "public_access_prevention": "inherited",
+            "requester_pays": false,
+            "retention_policy": [],
+            "rpo": null,
+            "self_link": "https://www.googleapis.com/storage/v1/b/realtime-data-pipeline-123-staging",
+            "soft_delete_policy": [
+              {
+                "effective_time": "2025-07-15T00:34:57.810Z",
+                "retention_duration_seconds": 604800
+              }
+            ],
+            "storage_class": "STANDARD",
+            "terraform_labels": {},
+            "timeouts": null,
+            "uniform_bucket_level_access": true,
+            "url": "gs://realtime-data-pipeline-123-staging",
+            "versioning": [],
+            "website": []
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsInJlYWQiOjI0MDAwMDAwMDAwMCwidXBkYXRlIjoyNDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjIifQ=="
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}

@@ -1,4 +1,3 @@
-# cloudbuild.yaml
 steps:
   - name: 'hashicorp/terraform:1.6.6'
     id: Terraform Init
@@ -8,6 +7,18 @@ steps:
       - |
         cd terraform
         terraform init
+
+  - name: 'hashicorp/terraform:1.6.6'
+    id: Terraform Import
+    entrypoint: sh
+    args:
+      - '-c'
+      - |
+        cd terraform
+        terraform import google_bigquery_dataset.realtime_dataset realtime-data-pipeline-123:realtime_dataset
+        terraform import google_pubsub_topic.stream_topic realtime-stream-topic
+        terraform import google_storage_bucket.staging_bucket realtime-data-pipeline-123-staging
+        terraform import google_storage_bucket.raw_data_bucket realtime-data-pipeline-123-raw-data
 
   - name: 'hashicorp/terraform:1.6.6'
     id: Terraform Plan
@@ -29,4 +40,3 @@ steps:
 
 options:
   logging: CLOUD_LOGGING_ONLY
-  
