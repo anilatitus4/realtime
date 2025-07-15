@@ -1,0 +1,28 @@
+# cloudbuild.yaml
+steps:
+  - name: 'hashicorp/terraform:1.6.6'
+    id: Terraform Init
+    entrypoint: sh
+    args:
+      - '-c'
+      - |
+        cd terraform
+        terraform init
+
+  - name: 'hashicorp/terraform:1.6.6'
+    id: Terraform Plan
+    entrypoint: sh
+    args:
+      - '-c'
+      - |
+        cd terraform
+        terraform plan
+
+  - name: 'hashicorp/terraform:1.6.6'
+    id: Terraform Apply
+    entrypoint: sh
+    args:
+      - '-c'
+      - |
+        cd terraform
+        terraform apply -auto-approve
