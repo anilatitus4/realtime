@@ -9,7 +9,6 @@ terraform {
 }
 
 provider "google" {
-  credentials = file("/Users/anilatitus/Desktop/creds/realtime.json")
   project     = var.project_id
   region      = var.region
 }
