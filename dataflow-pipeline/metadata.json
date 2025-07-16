@@ -1,0 +1,13 @@
+{
+    "name": "realtime-streaming-job",
+    "description": "Real-time streaming job with Pub/Sub to BigQuery and GCS",
+    "parameters": [
+      {
+        "name": "inputSubscription",
+        "label": "Input Pub/Sub subscription",
+        "helpText": "Pub/Sub subscription to read data from.",
+        "paramType": "TEXT"
+      }
+    ]
+  }
+  
