@@ -1,55 +1,56 @@
 steps:
-# 1. Terraform init + apply
-- name: hashicorp/terraform:1.6.6
-  dir: terraform
-  entrypoint: sh
-  args:
-    - -c
-    - |
-      terraform init
-      terraform apply -auto-approve
+  # 1. Terraform init + apply
+  - name: hashicorp/terraform:1.6.6
+    dir: terraform
+    entrypoint: sh
+    args:
+      - -c
+      - |
+        terraform init
+        terraform apply -auto-approve
 
-# 2. Build & push Cloud Run container (publisher)
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/publisher-service:latest', '.']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/$PROJECT_ID/publisher-service:latest']
+  # 2. Build & push Cloud Run container (publisher)
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-f', './publisher/Dockerfile', '-t', 'gcr.io/$PROJECT_ID/publisher-service:latest', './publisher']
 
-# 3. Deploy Cloud Run
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: gcloud
-  args:
-    [
-      'run', 'deploy', 'publisher-service',
-      '--image', 'gcr.io/$PROJECT_ID/publisher-service:latest',
-      '--platform', 'managed',
-      '--region', 'us-central1',
-      '--allow-unauthenticated'
-    ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/publisher-service:latest']
 
-# 4. Build Dataflow Flex Template
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: bash
-  args:
-    - -c
-    - |
-      gcloud dataflow flex-template build gs://realtime-data-pipeline-123-dataflow-template/bigquery-template.json \
-        --image=gcr.io/$PROJECT_ID/dataflow-pipeline:latest \
-        --sdk-language=PYTHON \
-        --metadata-file=metadata.json \
-        --temp-location=gs://realtime-data-pipeline-123-staging/temp \
-        --python-module=main
+  # 3. Deploy Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      [
+        'run', 'deploy', 'publisher-service',
+        '--image', 'gcr.io/$PROJECT_ID/publisher-service:latest',
+        '--platform', 'managed',
+        '--region', 'us-central1',
+        '--allow-unauthenticated'
+      ]
 
-# 5. Run Dataflow job (optional)
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: bash
-  args:
-    - -c
-    - |
-      gcloud dataflow flex-template run "streaming-to-bigquery-$(date +%Y%m%d-%H%M%S)" \
-        --template-file-gcs-location=gs://realtime-data-pipeline-123-dataflow-template/bigquery-template.json \
-        --region=us-central1 \
-        --parameters inputSubscription=projects/$PROJECT_ID/subscriptions/realtime-stream-sub,outputTable=$PROJECT_ID.realtime_dataset.streaming_output,tempLocation=gs://realtime-data-pipeline-123-staging/temp
+  # 4. Build Dataflow Flex Template
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        gcloud dataflow flex-template build gs://realtime-data-pipeline-123-dataflow-template/bigquery-template.json \
+          --image=gcr.io/$PROJECT_ID/dataflow-pipeline:latest \
+          --sdk-language=PYTHON \
+          --metadata-file=metadata.json \
+          --temp-location=gs://realtime-data-pipeline-123-staging/temp \
+          --python-module=main
+
+  # 5. Run Dataflow job (optional)
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        gcloud dataflow flex-template run "streaming-to-bigquery-$(date +%Y%m%d-%H%M%S)" \
+          --template-file-gcs-location=gs://realtime-data-pipeline-123-dataflow-template/bigquery-template.json \
+          --region=us-central1 \
+          --parameters inputSubscription=projects/$PROJECT_ID/subscriptions/realtime-stream-sub,outputTable=$PROJECT_ID.realtime_dataset.streaming_output,tempLocation=gs://realtime-data-pipeline-123-staging/temp
 
 timeout: 1800s
 
