@@ -1,0 +1,21 @@
+{
+  "name": "streaming-to-bigquery",
+  "description": "Dataflow Flex Template to stream data from Pub/Sub to BigQuery",
+  "parameters": [
+    {
+      "name": "inputSubscription",
+      "label": "Pub/Sub subscription",
+      "helpText": "Pub/Sub subscription to read from."
+    },
+    {
+      "name": "outputTable",
+      "label": "BigQuery output table",
+      "helpText": "BigQuery table to write to."
+    },
+    {
+      "name": "tempLocation",
+      "label": "Temp location",
+      "helpText": "Temporary location on GCS"
+    }
+  ]
+}
