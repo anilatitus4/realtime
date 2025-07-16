@@ -10,10 +10,6 @@ output "bigquery_dataset" {
   value = google_bigquery_dataset.realtime_dataset.dataset_id
 }
 
-output "bigquery_table" {
-  value = google_bigquery_table.realtime_table.table_id
-}
-
 output "gcs_bucket_staging" {
   value = google_storage_bucket.staging_bucket.name
 }
