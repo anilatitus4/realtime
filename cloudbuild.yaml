@@ -1,42 +1,63 @@
 steps:
-  - name: 'hashicorp/terraform:1.6.6'
-    id: Terraform Init
+  # Step 1: Terraform init & apply for infra
+  - name: hashicorp/terraform:1.6.6
+    id: Terraform-Apply
     entrypoint: sh
     args:
-      - '-c'
+      - -c
       - |
-        cd terraform
         terraform init
-
-  - name: 'hashicorp/terraform:1.6.6'
-    id: Terraform Import
-    entrypoint: sh
-    args:
-      - '-c'
-      - |
-        cd terraform
-        terraform import google_bigquery_dataset.realtime_dataset realtime-data-pipeline-123:realtime_dataset
-        terraform import google_pubsub_topic.stream_topic realtime-stream-topic
-        terraform import google_storage_bucket.staging_bucket realtime-data-pipeline-123-staging
-        terraform import google_storage_bucket.raw_data_bucket realtime-data-pipeline-123-raw-data
-
-  - name: 'hashicorp/terraform:1.6.6'
-    id: Terraform Plan
-    entrypoint: sh
-    args:
-      - '-c'
-      - |
-        cd terraform
-        terraform plan
-
-  - name: 'hashicorp/terraform:1.6.6'
-    id: Terraform Apply
-    entrypoint: sh
-    args:
-      - '-c'
-      - |
-        cd terraform
         terraform apply -auto-approve
+
+  # Step 2 (optional): Build Dataflow Docker image if pipeline containerized
+  # Remove this if your pipeline is a simple python script (not containerized)
+  - name: 'gcr.io/cloud-builders/docker'
+    id: Build-Pipeline-Image
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/dataflow-pipeline:latest', '.']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: Push-Pipeline-Image
+    args: ['push', 'gcr.io/$PROJECT_ID/dataflow-pipeline:latest']
+
+  # Step 3: Run Dataflow job via gcloud CLI (adjust flags as needed)
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: Run-Dataflow-Job
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        gcloud dataflow jobs run realtime-streaming-job \
+          --gcs-location=gs://your-staging-bucket/templates/your-template-file.json \
+          --region=us-central1 \
+          --parameters inputSubscription=projects/$PROJECT_ID/subscriptions/realtime-stream-sub \
+          --dataflow-service-options=cloud_logging_only \
+          --max-workers=5
+
+  # Step 4: Deploy Cloud Run service if needed (adjust service name)
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: Deploy-Cloud-Run
+    entrypoint: gcloud
+    args:
+      [
+        'run',
+        'deploy',
+        'publisher-service',
+        '--image',
+        'gcr.io/$PROJECT_ID/publisher-service:latest',
+        '--region',
+        'us-central1',
+        '--platform',
+        'managed',
+        '--allow-unauthenticated'
+      ]
+
+timeout: 1200s
+
+# Optional substitutions
+substitutions:
+  _DATAFLOW_TEMPLATE_BUCKET: "your-staging-bucket"
+  _DATAFLOW_TEMPLATE_FILE: "your-template-file.json"
 
 options:
   logging: CLOUD_LOGGING_ONLY
+  

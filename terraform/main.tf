@@ -47,3 +47,34 @@ resource "google_bigquery_table" "realtime_table" {
     type = "DAY"
   }
 }
+
+resource "google_cloud_run_service" "publisher_service" {
+  name     = "publisher-service"
+  location = "us-central1"
+
+  template {
+    spec {
+      containers {
+        image = "gcr.io/realtime-data-pipeline-123/publisher-service:v1"
+
+        env {
+          name  = "GOOGLE_CLOUD_PROJECT"
+          value = "realtime-data-pipeline-123"
+        }
+      }
+      service_account_name = "10017251802-compute@developer.gserviceaccount.com"
+    }
+  }
+
+  traffic {
+    percent         = 100
+    latest_revision = true
+  }
+}
+
+resource "google_cloud_run_service_iam_member" "noauth" {
+  service  = google_cloud_run_service.publisher_service.name
+  location = google_cloud_run_service.publisher_service.location
+  role     = "roles/run.invoker"
+  member   = "allUsers"
+}
