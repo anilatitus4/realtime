@@ -1,10 +1,14 @@
-FROM apache/beam_python3.11_sdk:2.54.0
+FROM gcr.io/dataflow-templates-base/python3-template-launcher-base
 
-WORKDIR /app
+# Set working directory
+WORKDIR /dataflow/template
 
+# Copy pipeline code and requirements
+COPY main.py .
 COPY requirements.txt .
+
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY pipeline.py .
-
-ENTRYPOINT ["python", "pipeline.py"]
+# Set the entrypoint
+ENTRYPOINT ["python", "main.py"]

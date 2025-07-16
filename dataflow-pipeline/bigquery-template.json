@@ -1,0 +1,37 @@
+{
+    "defaultEnvironment": {
+      "tempLocation": "gs://realtime-data-pipeline-123-staging/temp"
+    },
+    "image": "gcr.io/realtime-data-pipeline-123/dataflow-pipeline:latest",
+    "metadata": {
+      "description": "A streaming pipeline to ingest from Pub/Sub to BigQuery",
+      "name": "BigQuery Streaming Pipeline",
+      "parameters": [
+        {
+          "helpText": "Subscription for Pub/Sub source",
+          "isOptional": false,
+          "label": "Input Pub/Sub Subscription",
+          "name": "inputSubscription",
+          "paramType": "TEXT"
+        },
+        {
+          "helpText": "Output table in dataset.table format",
+          "isOptional": false,
+          "label": "BigQuery Output Table",
+          "name": "outputTable",
+          "paramType": "TEXT"
+        },
+        {
+          "helpText": "GCS bucket for temp files",
+          "isOptional": false,
+          "label": "Temporary Location",
+          "name": "tempLocation",
+          "paramType": "TEXT"
+        }
+      ]
+    },
+    "sdkInfo": {
+      "language": "PYTHON"
+    }
+  }
+  

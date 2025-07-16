@@ -1,13 +1,27 @@
 {
-    "name": "realtime-streaming-job",
-    "description": "Real-time streaming job with Pub/Sub to BigQuery and GCS",
-    "parameters": [
-      {
-        "name": "inputSubscription",
-        "label": "Input Pub/Sub subscription",
-        "helpText": "Pub/Sub subscription to read data from.",
-        "paramType": "TEXT"
-      }
-    ]
-  }
-  
+  "name": "BigQuery Streaming Pipeline",
+  "description": "A streaming pipeline to ingest from Pub/Sub to BigQuery",
+  "parameters": [
+    {
+      "name": "inputSubscription",
+      "label": "Input Pub/Sub Subscription",
+      "helpText": "Subscription for Pub/Sub source",
+      "paramType": "text",
+      "isOptional": false
+    },
+    {
+      "name": "outputTable",
+      "label": "BigQuery Output Table",
+      "helpText": "Output table in dataset.table format",
+      "paramType": "text",
+      "isOptional": false
+    },
+    {
+      "name": "tempLocation",
+      "label": "Temporary Location",
+      "helpText": "GCS bucket for temp files",
+      "paramType": "text",
+      "isOptional": false
+    }
+  ]
+}
