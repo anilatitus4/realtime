@@ -11,7 +11,8 @@ steps:
 
   # 2. Build & push Cloud Run container (publisher)
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-f', './publisher/Dockerfile', '-t', 'gcr.io/$PROJECT_ID/publisher-service:latest', './publisher']
+    dir: publisher
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/publisher-service:latest', '.']
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/publisher-service:latest']
@@ -28,7 +29,7 @@ steps:
         '--allow-unauthenticated'
       ]
 
-  # Step 4: Build and push Docker image for Dataflow
+  # 4. Build and push Docker image for Dataflow
   - name: 'gcr.io/cloud-builders/docker'
     dir: dataflow-pipeline
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/dataflow-pipeline:latest', '.']
@@ -36,7 +37,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/dataflow-pipeline:latest']
 
-  # Step 5: Build Dataflow Flex Template
+  # 5. Build Dataflow Flex Template
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: bash
     args:
