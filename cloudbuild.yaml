@@ -30,11 +30,11 @@ steps:
 
   # Step 4: Build and push Docker image for Dataflow
   - name: 'gcr.io/cloud-builders/docker'
-    dir: dataflow
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/publisher-service:latest', './publisher']
+    dir: dataflow-pipeline
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/dataflow-pipeline:latest', '.']
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/publisher-service:latest']
+    args: ['push', 'gcr.io/$PROJECT_ID/dataflow-pipeline:latest']
 
   # Step 5: Build Dataflow Flex Template
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
