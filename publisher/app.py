@@ -1,34 +1,26 @@
 from flask import Flask, request, jsonify
-import json
-import os
 from google.cloud import pubsub_v1
-import datetime
+import os
+import json
 
 app = Flask(__name__)
 
-# Initialize Pub/Sub publisher
 publisher = pubsub_v1.PublisherClient()
-project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
-topic_id = "realtime-stream-topic"
-topic_path = publisher.topic_path(project_id, topic_id)
+topic_path = publisher.topic_path(os.environ["GCP_PROJECT"], "realtime-stream-topic")
 
 @app.route("/", methods=["POST"])
-def publish():
-    try:
-        data = request.get_json()
-        if not data:
-            return jsonify({"error": "No JSON received"}), 400
-
-        # Add timestamp
-        data["timestamp"] = datetime.datetime.utcnow().isoformat()
-        data_str = json.dumps(data)
-        publisher.publish(topic_path, data_str.encode("utf-8"))
-
-        return jsonify({"status": "Message published", "data": data}), 200
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+def publish_message():
+    data = request.json
+    if not data:
+        return "No JSON received", 400
+    data_str = json.dumps(data)
+    publisher.publish(topic_path, data=data_str.encode("utf-8"))
+    return "Message published", 200
 
 @app.route("/", methods=["GET"])
-def index():
-    return "Service is running. Use POST to publish messages.", 200
+def hello():
+    return "Cloud Run publisher service is running!"
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=8080)

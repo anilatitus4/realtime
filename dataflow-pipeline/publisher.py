@@ -6,7 +6,7 @@ project_id = "realtime-data-pipeline-123"
 topic_id = "realtime-stream-topic"
 
 publisher = pubsub_v1.PublisherClient()
-topic_path = publisher.topic_path(project_id, topic_id)
+topic_path = publisher.topic_path("realtime-data-pipeline-123", "realtime-stream-topic")
 
 for i in range(10):
     message_data = {

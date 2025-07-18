@@ -1,14 +1,18 @@
-# Use official Python image
-FROM python:3.11-slim
+# Use Python base image
+FROM python:3.9-slim
 
 # Set working directory
 WORKDIR /app
 
-# Copy files
-COPY requirements.txt requirements.txt
+# Copy requirement and install
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+# Copy your app code
+COPY app.py .
 
-# Use Gunicorn to serve Flask app
-CMD ["gunicorn", "-b", ":8080", "app:app"]
+# ✅ Expose port 8080 for Cloud Run
+EXPOSE 8080
+
+# ✅ Run Flask directly
+CMD ["python", "app.py"]
